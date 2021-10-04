@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="photoSize">300dp</dimen>
+    <dimen name="settingsTextPad">15dp</dimen>
 </resources>

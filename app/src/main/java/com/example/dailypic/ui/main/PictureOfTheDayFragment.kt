@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import coil.api.load
 import com.example.dailypic.R
 import kotlinx.android.synthetic.main.main_fragment.*
+import kotlin.concurrent.fixedRateTimer
 
 class PictureOfTheDayFragment : Fragment() {
     //Ленивая инициализация модели
@@ -22,7 +24,19 @@ class PictureOfTheDayFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        val view = inflater.inflate(R.layout.main_fragment, container, false)
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbarMain)
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.setting -> {
+                    fragmentManager?.beginTransaction()?.replace(R.id.container, SettingsFragment())
+                        ?.addToBackStack(null)?.commit()
+
+                }
+            }
+            return@setOnMenuItemClickListener true
+        }
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -57,16 +71,17 @@ class PictureOfTheDayFragment : Fragment() {
                 loadingLayout.visibility = View.VISIBLE
             }
             //Отобразите загрузку
-                //showLoading()
+            //showLoading()
             is PictureOfTheDayData.Error -> {
                 data.error.message?.let { toast(it) }
             }
         }
     }
 
-    private fun toast(messageToast:String) {
-        Toast.makeText(context,messageToast,Toast.LENGTH_SHORT).show()
+    private fun toast(messageToast: String) {
+        Toast.makeText(context, messageToast, Toast.LENGTH_SHORT).show()
     }
+
     companion object {
         fun newInstance() = PictureOfTheDayFragment()
         private var isMain = true
