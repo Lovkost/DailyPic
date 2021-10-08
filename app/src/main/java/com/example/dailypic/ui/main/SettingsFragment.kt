@@ -1,22 +1,16 @@
 package com.example.dailypic.ui.main
 
-import android.app.TaskStackBuilder
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Switch
 import androidx.appcompat.widget.SwitchCompat
-import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import com.example.dailypic.R
-import kotlinx.android.synthetic.main.fragment_settings.*
-import com.example.dailypic.MainActivity
-
-import android.content.Intent
 
 
-
+const val IS_SWITCH_KEY = "SWITCH_KEY"
 
 class SettingsFragment : Fragment() {
     override fun onCreateView(
@@ -24,21 +18,34 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
-        val toolbar = view.findViewById<Toolbar>(R.id.toolbarMain)
         val darkThemeOnSwitch = view?.findViewById<SwitchCompat>(R.id.switchCosmicTheme)
+        darkThemeOnSwitch?.isChecked = getFlag(IS_SWITCH_KEY)
         darkThemeOnSwitch?.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
-                toolbar.setBackgroundColor(R.color.ToolbarDarkTheme)
-                requireActivity().apply {
-                    setTheme(R.style.DarkTheme)
-                    recreate()
-                }
+            if (isChecked) {
+                saveFlag(isChecked)
+requireActivity().recreate()
+                context?.setTheme(R.style.DarkTheme)
+            } else {
+                saveFlag(isChecked)
+                requireActivity().recreate()
             }
         }
 
         return view
     }
 
+    fun getFlag(key: String): Boolean {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        if (sharedPref != null) return sharedPref.getBoolean(key, false)
+        return false
+    }
+
+    private fun saveFlag(flag: Boolean) {
+        val shardePrefSwitch = activity?.getPreferences(Context.MODE_PRIVATE)
+        val editor = shardePrefSwitch?.edit()
+        editor?.putBoolean(IS_SWITCH_KEY, flag)
+        editor?.apply()
+    }
 
 
     companion object {
