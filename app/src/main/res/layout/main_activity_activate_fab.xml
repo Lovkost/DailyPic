@@ -45,5 +45,12 @@
         android:src="@drawable/ic_baseline_message_24"
         app:layout_constraintEnd_toEndOf="parent"
         />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/middle_expanded_fab"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintCircle="@+id/mainActivityFABLocation"
+        app:layout_constraintCircleRadius="60dp"
+        app:layout_constraintCircleAngle="315" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
