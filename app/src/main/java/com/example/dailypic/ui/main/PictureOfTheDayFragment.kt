@@ -2,10 +2,15 @@ package com.example.dailypic.ui.main
 
 import android.content.Context
 import android.os.Bundle
+import android.transition.ChangeBounds
+import android.transition.ChangeImageTransform
+import android.transition.TransitionManager
+import android.transition.TransitionSet
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -16,8 +21,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlin.concurrent.fixedRateTimer
+
 const val IS_BOOTOM_NAVIGATION_VIEW = "NAV_VIEW"
+
 class PictureOfTheDayFragment : Fragment() {
+    private var isExpanded = false
+
     //Ленивая инициализация модели
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProviders.of(this).get(PictureOfTheDayViewModel::class.java)
@@ -30,6 +39,23 @@ class PictureOfTheDayFragment : Fragment() {
         val view = inflater.inflate(R.layout.main_fragment, container, false)
         val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigation)
         val toolbar = activity?.findViewById<Toolbar>(R.id.toolbarSettting)
+        val imageView = view.findViewById<EquilateralImageView>(R.id.image_view)
+        imageView.setOnClickListener {
+            isExpanded = !isExpanded
+            TransitionManager.beginDelayedTransition(
+                container, TransitionSet()
+                    .addTransition(ChangeBounds())
+                    .addTransition(ChangeImageTransform())
+            )
+            val params: ViewGroup.LayoutParams = imageView.layoutParams
+            params.height =
+                if (isExpanded) ViewGroup.LayoutParams.MATCH_PARENT else
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            imageView.layoutParams = params
+            imageView.scaleType =
+                if (isExpanded) ImageView.ScaleType.CENTER_CROP else
+                    ImageView.ScaleType.FIT_CENTER
+        }
 //        bottomNavigation?.selectedItemId = getItem(IS_BOOTOM_NAVIGATION_VIEW)
         toolbar?.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -49,9 +75,11 @@ class PictureOfTheDayFragment : Fragment() {
                         ?.replace(R.id.container, PictureOfTheDayFragment())?.addToBackStack(null)
                         ?.commit()
                 }
-                R.id.EarthPicBNV->{
+                R.id.EarthPicBNV -> {
                     savePos(it.itemId)
-                    fragmentManager?.beginTransaction()?.replace(R.id.container,EarthPictureFragment())?.addToBackStack(null)?.commit()
+                    fragmentManager?.beginTransaction()
+                        ?.replace(R.id.container, EarthPictureFragment())?.addToBackStack(null)
+                        ?.commit()
                 }
             }
             return@setOnNavigationItemSelectedListener true
@@ -60,15 +88,18 @@ class PictureOfTheDayFragment : Fragment() {
     }
 
     private fun getItem(isBootomNavigationView: String): Int {
- val sharedPrefBottomNavPos = activity?.getPreferences(Context.MODE_PRIVATE)
-        if(sharedPrefBottomNavPos!=null) return sharedPrefBottomNavPos.getInt(isBootomNavigationView,0)
+        val sharedPrefBottomNavPos = activity?.getPreferences(Context.MODE_PRIVATE)
+        if (sharedPrefBottomNavPos != null) return sharedPrefBottomNavPos.getInt(
+            isBootomNavigationView,
+            0
+        )
         return 0
     }
 
     private fun savePos(itemId: Int) {
         var sharedPrefBottomNavPos = activity?.getPreferences(Context.MODE_PRIVATE)
         val editor = sharedPrefBottomNavPos?.edit()
-        editor?.putInt(IS_BOOTOM_NAVIGATION_VIEW,itemId)
+        editor?.putInt(IS_BOOTOM_NAVIGATION_VIEW, itemId)
         editor?.apply()
 
     }
