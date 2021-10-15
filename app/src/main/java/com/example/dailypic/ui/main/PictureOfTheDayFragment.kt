@@ -1,6 +1,7 @@
 package com.example.dailypic.ui.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.transition.ChangeBounds
 import android.transition.ChangeImageTransform
@@ -17,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import coil.api.load
 import com.example.dailypic.R
+import com.example.dailypic.recycler.RecyclerActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -63,6 +65,11 @@ class PictureOfTheDayFragment : Fragment() {
                     fragmentManager?.beginTransaction()?.replace(R.id.container, SettingsFragment())
                         ?.addToBackStack(null)?.commit()
 
+                }
+                R.id.openActivityRecycler->{
+                    startActivity(
+                        Intent(activity, RecyclerActivity::class.java)
+                    )
                 }
             }
             return@setOnMenuItemClickListener true

@@ -6,4 +6,8 @@
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/settings"
         app:showAsAction="always" />
+    <item android:id="@+id/openActivityRecycler"
+        android:icon="@drawable/ic_baseline_message_24"
+        android:title="@string/openactiv"
+        app:showAsAction="ifRoom"/>
 </menu>

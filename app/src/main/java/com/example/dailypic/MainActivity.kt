@@ -4,13 +4,15 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.Color
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.dailypic.recycler.RecyclerActivity
 import com.example.dailypic.ui.main.IS_SWITCH_KEY
 import com.example.dailypic.ui.main.PictureOfTheDayFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
