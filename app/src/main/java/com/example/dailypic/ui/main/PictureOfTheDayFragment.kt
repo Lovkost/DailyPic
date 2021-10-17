@@ -2,6 +2,7 @@ package com.example.dailypic.ui.main
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.transition.ChangeBounds
 import android.transition.ChangeImageTransform
@@ -133,6 +134,8 @@ class PictureOfTheDayFragment : Fragment() {
                     }
                     textViewTitle.text = serverResponseData.title
                     textViewDescription.text = serverResponseData.explanation
+                    textViewTitle.typeface = Typeface.createFromAsset(context?.assets,"font/SpaceQuest-Xj4o.ttf")
+                    textViewDescription.typeface = Typeface.createFromAsset(context?.assets,"font/SpaceQuest-Xj4o.ttf")
                 }
             }
             is PictureOfTheDayData.Loading -> {
