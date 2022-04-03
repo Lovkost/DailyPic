@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">DailyPic</string>
+    <string name="photo_of_the_day_stub">Фото дня</string>
+    <string name="wikiET">Посмотреть на Wiki</string>
+    <string name="darkTheme">Темная тема</string>
+    <string name="settings">Settings</string>
+    <string name="dailypage">DailyPage</string>
+    <string name="earthpage">EarthPage</string>
+    <string name="openactiv">openActiv</string>
 </resources>
